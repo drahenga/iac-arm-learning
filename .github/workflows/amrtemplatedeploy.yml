@@ -4,6 +4,9 @@ name: armTemplateDeployment
 
 # Controls when the workflow will run
 on:
+  push:
+    branches:
+      - "main"
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -22,3 +25,10 @@ jobs:
         uses: Azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Deploy Resource Group rg-githubaction with AZ CLI
+        uses: Azure/cli@v1
+        with:
+
+          inlinescript: |
+            az deployment sub create --location "Canada East" --template-file ./arm-templates/resourcegroups.json
